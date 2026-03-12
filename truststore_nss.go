@@ -143,6 +143,7 @@ func (m *mkcert) forEachNSSProfile(f func(profile string)) (found int) {
 		pp, _ := filepath.Glob(ff)
 		profiles = append(profiles, pp...)
 	}
+	fmt.Printf("forEachNSSProfile: %v\n", profiles)
 	for _, profile := range profiles {
 		if stat, err := os.Stat(profile); err != nil || !stat.IsDir() {
 			continue
