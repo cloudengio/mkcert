@@ -146,14 +146,21 @@ func (m *mkcert) forEachNSSProfile(f func(profile string)) (found int) {
 	fmt.Printf("forEachNSSProfile: %v\n", profiles)
 	for _, profile := range profiles {
 		if stat, err := os.Stat(profile); err != nil || !stat.IsDir() {
+			fmt.Printf("forEachNSSProfile: %v: not a directory %v: err %v\n", profile, !stat.IsDir(), err)
 			continue
 		}
+		fmt.Printf("forEachNSSProfile: testing %v\n", filepath.Join(profile, "cert9.db"))
+		fmt.Printf("forEachNSSProfile: testing %v\n", filepath.Join(profile, "cert8.db"))
 		if pathExists(filepath.Join(profile, "cert9.db")) {
+			fmt.Printf("forEachNSSProfile: %v: cert9.db exists\n", profile)
 			f("sql:" + profile)
 			found++
 		} else if pathExists(filepath.Join(profile, "cert8.db")) {
+			fmt.Printf("forEachNSSProfile: %v: cert8.db exists\n", profile)
 			f("dbm:" + profile)
 			found++
+		} else {
+			fmt.Printf("forEachNSSProfile: %v: cert9.db or cert8.db does not exist\n", profile)
 		}
 	}
 	return
