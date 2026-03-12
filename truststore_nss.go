@@ -6,6 +6,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -41,8 +42,10 @@ func init() {
 	for _, path := range allPaths {
 		if pathExists(path) {
 			hasNSS = true
+			fmt.Printf("Found NSS at %s\n", path)
 			break
 		}
+		fmt.Printf("Did not find NSS at %s\n", path)
 	}
 
 	switch runtime.GOOS {
@@ -66,6 +69,9 @@ func init() {
 	case "linux":
 		if hasCertutil = binaryExists("certutil"); hasCertutil {
 			certutilPath, _ = exec.LookPath("certutil")
+			fmt.Printf("Found certutil at %s\n", certutilPath)
+		} else {
+			fmt.Printf("Did not find certutil\n")
 		}
 	}
 }
