@@ -146,7 +146,7 @@ func (m *mkcert) forEachNSSProfile(f func(profile string)) (found int) {
 	fmt.Printf("forEachNSSProfile: %v\n", profiles)
 	for _, profile := range profiles {
 		if stat, err := os.Stat(profile); err != nil || !stat.IsDir() {
-			fmt.Printf("forEachNSSProfile: %v: not a directory %v: err %v\n", profile, !stat.IsDir(), err)
+			fmt.Printf("forEachNSSProfile: %v: not a directory %v\n", profile, err)
 			continue
 		}
 		fmt.Printf("forEachNSSProfile: testing %v\n", filepath.Join(profile, "cert9.db"))
