@@ -23,6 +23,7 @@ var (
 		filepath.Join(os.Getenv("HOME"), ".pki/nssdb"),
 		filepath.Join(os.Getenv("HOME"), "snap/chromium/current/.pki/nssdb"), // Snapcraft
 		"/etc/pki/nssdb", // CentOS 7
+		filepath.Join(os.Getenv("HOME"), ".local/share/pki/nssdb"), // chrome-for-testing
 	}
 	firefoxPaths = []string{
 		"/usr/bin/firefox",
