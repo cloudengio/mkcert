@@ -96,6 +96,8 @@ func (m *mkcert) installNSS() bool {
 	if m.forEachNSSProfile(func(profile string) {
 		cmd := exec.Command(certutilPath, "-A", "-d", profile, "-t", "C,,", "-n", m.caUniqueName(), "-i", filepath.Join(m.CAROOT, rootName))
 		out, err := execCertutil(cmd)
+		fmt.Printf("installNSS for profile %s: %v %v\n", profile, certutilPath, strings.Join(cmd.Args, " "))
+		fmt.Printf("installNSS for profile %s: %v: %v\n", profile, err, string(out))
 		fatalIfCmdErr(err, "certutil -A -d "+profile, out)
 	}) == 0 {
 		log.Printf("ERROR: no %s security databases found", NSSBrowsers)
