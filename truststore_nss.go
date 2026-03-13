@@ -97,8 +97,6 @@ func (m *mkcert) installNSS() bool {
 	if m.forEachNSSProfile(func(profile string) {
 		cmd := exec.Command(certutilPath, "-A", "-d", profile, "-t", "C,,", "-n", m.caUniqueName(), "-i", filepath.Join(m.CAROOT, rootName))
 		out, err := execCertutil(cmd)
-		fmt.Printf("installNSS for profile %s: %v %v\n", profile, certutilPath, strings.Join(cmd.Args, " "))
-		fmt.Printf("installNSS for profile %s: %v: %v\n", profile, err, string(out))
 		fatalIfCmdErr(err, "certutil -A -d "+profile, out)
 	}) == 0 {
 		log.Printf("ERROR: no %s security databases found", NSSBrowsers)
@@ -144,24 +142,16 @@ func (m *mkcert) forEachNSSProfile(f func(profile string)) (found int) {
 		pp, _ := filepath.Glob(ff)
 		profiles = append(profiles, pp...)
 	}
-	fmt.Printf("forEachNSSProfile: %v\n", profiles)
 	for _, profile := range profiles {
 		if stat, err := os.Stat(profile); err != nil || !stat.IsDir() {
-			fmt.Printf("forEachNSSProfile: %v: not a directory %v\n", profile, err)
 			continue
 		}
-		fmt.Printf("forEachNSSProfile: testing %v\n", filepath.Join(profile, "cert9.db"))
-		fmt.Printf("forEachNSSProfile: testing %v\n", filepath.Join(profile, "cert8.db"))
 		if pathExists(filepath.Join(profile, "cert9.db")) {
-			fmt.Printf("forEachNSSProfile: %v: cert9.db exists\n", profile)
 			f("sql:" + profile)
 			found++
 		} else if pathExists(filepath.Join(profile, "cert8.db")) {
-			fmt.Printf("forEachNSSProfile: %v: cert8.db exists\n", profile)
 			f("dbm:" + profile)
 			found++
-		} else {
-			fmt.Printf("forEachNSSProfile: %v: cert9.db or cert8.db does not exist\n", profile)
 		}
 	}
 	return
