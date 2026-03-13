@@ -43,10 +43,8 @@ func init() {
 	for _, path := range allPaths {
 		if pathExists(path) {
 			hasNSS = true
-			fmt.Printf("Found NSS at %s\n", path)
 			break
 		}
-		fmt.Printf("Did not find NSS at %s\n", path)
 	}
 
 	switch runtime.GOOS {
